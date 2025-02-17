@@ -1,0 +1,74 @@
+.page-container {
+  background-color: rgb(248, 250, 253);
+}
+
+.chart {
+  display: flex;
+  margin: 30px 50px;
+  padding: 20px;
+  overflow: hidden;
+  align-items: center;
+}
+
+.line-chart {
+  background-color: rgb(255, 255, 255);
+  height: 320px;
+  border-radius: 30px;
+}
+
+.small-chart {
+  margin-left: 10px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bar-chart-small {
+  border-radius: 20px;
+  height: 150px;
+  width: 300px;
+}
+
+.line-chart-small {
+  border-radius: 20px;
+  margin-top: 20px;
+  height: 150px;
+}
+
+.rank-list {
+  display: flex;
+  margin: 20px 30px;
+  padding: 10px;
+  overflow: hidden;
+  align-items: center;
+}
+
+.popular-rank {
+  margin-right: 10px;
+}
+
+.popular-list {
+  border-radius: 20px;
+}
+
+.earn-list{
+  border-radius: 20px;
+}
+
+.attention-item {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+}
+
+.report-item {
+  display: flex;
+  align-items: center;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
