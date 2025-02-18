@@ -31,6 +31,6 @@
 </template>
 
 <script setup lang="js">
-import './index.scss';
+import './register.scss';
 
 </script>
