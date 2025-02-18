@@ -26,27 +26,24 @@
     </div>
 
     <div class="search-oper">
-      <n-button type="info" class="search-item">
-        Info
+      <n-button type="info" class="search-button">
+        搜索
       </n-button>
-      <n-button type="info" class="search-item">
-        Info
+      <n-button type="info" class="search-button">
+        重置
       </n-button>
     </div>
 
 
     <div class="oper-button">
-      <n-button type="info">
-        Info
-      </n-button>
       <n-button type="success">
-        Success
+        修改
       </n-button>
       <n-button type="warning">
-        Warning
+        取消
       </n-button>
       <n-button type="error">
-        Error
+        删除
       </n-button>
     </div>
 

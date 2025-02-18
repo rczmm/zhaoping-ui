@@ -3,7 +3,7 @@
 
     <div class="chart">
 
-      <n-card title="Sales Profit" hoverable class="line-chart">
+      <n-card title="招聘渠道" hoverable class="line-chart">
         <template #header-extra>
           <n-select v-model:value="value" :options="options"/>
         </template>
@@ -12,14 +12,14 @@
 
       <div class="small-chart">
 
-        <n-card title="Total followers" hoverable class="bar-chart-small">
+        <n-card title="招聘目标" hoverable class="bar-chart-small">
           <template #header-extra>
             <n-select v-model:value="value" :options="options"/>
           </template>
           <v-chart :option="barOption" autoresize/>
         </n-card>
 
-        <n-card title="Total followers" hoverable class="line-chart-small">
+        <n-card title="入职人数" hoverable class="line-chart-small">
           <template #header-extra>
             <n-select v-model:value="value" :options="options"/>
           </template>
@@ -32,12 +32,13 @@
 
     <div class="rank-list">
       <div class="popular-rank">
-        <n-card title="Popular Rank" hoverable class="popular-list">
+        <n-card title="热门岗位" hoverable class="popular-list">
           <template #header-extra>
-            <n-text>Total 9k Visitors</n-text>
+            <n-gradient-text>最热门的九个岗位</n-gradient-text>
           </template>
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="post" label="岗位" width="180"/>
+            <el-table-column prop="post" label="岗位"/>
+            <el-table-column prop="price" label="薪资范围"/>
             <el-table-column prop="attention" label="已投递|看过" width="180">
               <template #default="scope">
                 <div class="attention-item">
@@ -53,7 +54,19 @@
               </template>
 
             </el-table-column>
-            <el-table-column prop="num" label="剩余数目"/>
+            <el-table-column prop="num" label="招聘进度">
+              <template #default="scope">
+                <el-progress
+                    :percentage="100"
+                    :stroke-width="15"
+                    striped
+                    striped-flow
+                    :duration="10"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="value" label="剩余岗位"/>
+            <el-table-column prop="value" label="岗位性质"/>
             <el-table-column fixed="right" label="" min-width="120">
               <template #default="scope">
                 <n-dropdown trigger="hover" :options="options" @select="handleSelect">
@@ -72,7 +85,7 @@
         </n-card>
       </div>
       <div class="earn-rank">
-        <n-card title="Earn Rank" hoverable class="earn-list">
+        <n-card title="新增岗位" hoverable class="earn-list">
           <el-table :data="reportData">
             <el-table-column label="岗位" width="180">
               <template #default="scope">
@@ -327,47 +340,64 @@ const tableData = ref([
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
   }, {
     post: '高级后端开发工程师',
     attention: " 8 / 10",
     value: '80',
     num: '2',
+    price: '1k-3k'
+  }, {
+    post: '高级后端开发工程师',
+    attention: " 8 / 10",
+    value: '80',
+    num: '2',
+    price: '1k-3k'
   },
-
 ])
 
 const reportData = ref([
   {
+    post: "后端开发",
+    value: "16.19%",
+    num: 2
+  }, {
     post: "后端开发",
     value: "16.19%",
     num: 2

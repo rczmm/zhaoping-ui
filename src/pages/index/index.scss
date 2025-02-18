@@ -4,7 +4,8 @@
 
 .chart {
   display: flex;
-  margin: auto 2px;
+  margin: auto 20px;
+  width: auto;
   padding: 20px;
   overflow: hidden;
   align-items: center;
@@ -12,41 +13,42 @@
 
 .line-chart {
   background-color: rgb(255, 255, 255);
-  height: 320px;
+  height: 350px;
   border-radius: 30px;
 }
 
 .small-chart {
   margin-left: 10px;
-  height: 320px;
+  height: 350px;
   display: flex;
   flex-direction: column;
 }
 
 .bar-chart-small {
   border-radius: 20px;
-  height: 150px;
-  width: 300px;
+  height: 170px;
+  width: 400px;
 }
 
 .line-chart-small {
   border-radius: 20px;
   margin-top: 20px;
-  height: 150px;
+  height: 170px;
+  width: 400px;
 }
 
 .rank-list {
-  width: auto;
   display: flex;
-  margin: 20px 10px;
+  margin: 20px 30px;
   padding: 10px;
   overflow: hidden;
-  align-items: center;
+  align-items: start;
+  width: auto;
 }
 
 .popular-rank {
-  width: 70%;
-  margin-right: 10px;
+  width: 80%;
+  margin-right: 30px;
 }
 
 .popular-list {
@@ -57,6 +59,8 @@
 .earn-list{
   width: auto;
   border-radius: 20px;
+  display: flex;
+  justify-content: right;
 }
 
 .attention-item {

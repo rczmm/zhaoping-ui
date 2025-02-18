@@ -26,47 +26,51 @@
     </div>
 
     <div class="search-oper">
-      <n-button type="info" class="search-item">
-        Info
+      <n-button type="info" class="search-button">
+        搜索
       </n-button>
-      <n-button type="info" class="search-item">
-        Info
+      <n-button type="info" class="search-button">
+        重置
       </n-button>
     </div>
 
+    <n-gradient-text class="title">岗位列表</n-gradient-text>
 
     <div class="oper-button">
       <n-button type="info">
-        Info
+        新增岗位
       </n-button>
       <n-button type="success">
-        Success
+        编辑岗位
       </n-button>
       <n-button type="warning">
-        Warning
+        停用岗位
       </n-button>
       <n-button type="error">
-        Error
+        删除岗位
       </n-button>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" height="250">
-      <el-table-column fixed prop="date" label="Date" width="150"/>
-      <el-table-column prop="name" label="Name" width="120"/>
-      <el-table-column prop="state" label="State" width="120"/>
-      <el-table-column prop="city" label="City" width="320"/>
-      <el-table-column prop="address" label="Address" width="600"/>
+    <n-divider></n-divider>
+
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column fixed prop="date" label="Date"/>
+      <el-table-column prop="name" label="Name"/>
+      <el-table-column prop="state" label="State"/>
+      <el-table-column prop="city" label="City"/>
+      <el-table-column prop="address" label="Address" show-overflow-tooltip/>
       <el-table-column prop="zip" label="Zip"/>
     </el-table>
 
-    <n-pagination :item-count="101">
-      <template #prefix="{ itemCount, startIndex }">
-        从第 {{ startIndex }} 项开始, 共 {{ itemCount }} 项
-      </template>
-      <template #suffix="{ endIndex }">
-        从第 {{ endIndex }} 项结束
-      </template>
-    </n-pagination>
+    <div class="pagination">
+      <n-pagination
+          :item-count="201"
+          :page-sizes="[10, 20, 30, 40]"
+          show-size-picker
+      />
+    </div>
+
+
   </div>
 
 </template>

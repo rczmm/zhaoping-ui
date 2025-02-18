@@ -15,3 +15,29 @@
   display: flex;
   justify-content: right;
 }
+
+.search-button {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.oper-button {
+  margin: 20px 10px;
+
+  button {
+    margin-right: 10px;
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: start;
+  font-size: 24px;
+  margin: auto 10px;
+}
+
+.pagination{
+  margin: 10px;
+  display: flex;
+  justify-content: right;
+}
