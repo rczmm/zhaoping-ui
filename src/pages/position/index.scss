@@ -1,0 +1,17 @@
+.search-view {
+  display: grid; /* 启用 grid 布局 */
+  grid-template-columns: repeat(4, 1fr); /* 创建四个等宽的列 */
+  gap: 10px; /* 设置网格项目之间的间距 */
+  margin: 3px 5px;
+}
+
+.search-item {
+  width: 20%;
+  box-sizing: border-box; /* 包含边框和内边距在宽度内 */
+  padding: 3px; /* 添加内边距，使元素之间有间隔 */
+}
+
+.search-oper {
+  display: flex;
+  justify-content: right;
+}

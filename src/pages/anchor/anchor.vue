@@ -62,7 +62,11 @@
 import login from '../login/login.vue';
 import register from '../register/register.vue';
 import index from '../index/index.vue';
+import position from '../position/position.vue'
 import './index.scss';
+import interview from "@/pages/interview/interview.vue";
+import resume from "@/pages/resume/resume.vue";
+import candidate from "@/pages/candidate/candidate.vue";
 
 const menuOptions = [
   {
@@ -76,6 +80,19 @@ const menuOptions = [
   {
     label: '登录',
     key: 'login',
+  },
+  {
+    label: '职位管理',
+    key: 'position',
+  }, {
+    label: '面试管理',
+    key: 'interview',
+  }, {
+    label: '简历管理',
+    key: 'resume',
+  }, {
+    label: '候选人管理',
+    key: 'candidate',
   }
 ];
 
@@ -89,6 +106,14 @@ const currentComponent = computed(() => {
       return register;
     case 'index':
       return index;
+    case 'position':
+      return position;
+    case 'interview':
+      return interview;
+    case 'resume':
+      return resume;
+    case 'candidate':
+      return candidate;
     default:
       return login; // 或者返回一个默认组件
   }
