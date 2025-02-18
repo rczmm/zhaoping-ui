@@ -394,4 +394,6 @@ const reportData = ref([
   }
 ])
 
+defineProps()
+
 </script>

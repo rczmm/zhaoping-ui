@@ -2,6 +2,7 @@ import {createRouter, createWebHashHistory} from "vue-router";
 import index from '../pages/index/index.vue';
 import login from '../pages/login/login.vue';
 import register from '../pages/register/register.vue';
+import anchor from '../pages/anchor/anchor.vue';
 import {useAuthStore} from '../stores/auth' //  导入 auth store
 
 const router = createRouter({
@@ -10,7 +11,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: index,
+            component: anchor,
             meta: {
                 requiresAuth: true //  表示该路由需要登录才能访问
             }
@@ -24,7 +25,12 @@ const router = createRouter({
             path: '/register',
             name: 'register',
             component: register
-        }
+        },
+        {
+            path: '/anchor',
+            name: 'anchor',
+            component: anchor
+        },
     ]
 });
 
