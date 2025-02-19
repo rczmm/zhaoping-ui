@@ -34,6 +34,8 @@
       </n-button>
     </div>
 
+    <n-gradient-text class="title">面试列表</n-gradient-text>
+
 
     <div class="oper-button">
       <n-button type="success">
@@ -47,23 +49,30 @@
       </n-button>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" height="250">
-      <el-table-column fixed prop="date" label="Date" width="150"/>
-      <el-table-column prop="name" label="Name" width="120"/>
-      <el-table-column prop="state" label="State" width="120"/>
-      <el-table-column prop="city" label="City" width="320"/>
-      <el-table-column prop="address" label="Address" width="600"/>
-      <el-table-column prop="zip" label="Zip"/>
+    <n-divider></n-divider>
+
+    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" :selectable="selectable"/>
+      <el-table-column fixed prop="candidate_name" label="候选人姓名" width="150"/>
+      <el-table-column fixed prop="candidate_phone" label="候选人联系电话" width="150"/>
+      <el-table-column fixed prop="candidate_email" label="候选人邮箱" width="150" show-overflow-tooltip/>
+      <el-table-column fixed prop="job_title" label="职位名称" width="150"/>
+      <el-table-column fixed prop="interview_time" label="面试的时间" width="150"/>
+      <el-table-column fixed prop="interview_location" label="面试的地点" width="150" show-overflow-tooltip/>
+      <el-table-column fixed prop="interviewer" label="面试官姓名" width="150"/>
+      <el-table-column fixed prop="interview_type" label="面试类型" width="150"/>
+      <el-table-column fixed prop="interview_status" label="面试状态" width="150"/>
+      <el-table-column fixed prop="interview_feedback" label="反馈内容" width="150" show-overflow-tooltip/>
+      <el-table-column fixed prop="remarks" label="备注信息" width="150" show-overflow-tooltip/>
     </el-table>
 
-    <n-pagination :item-count="101">
-      <template #prefix="{ itemCount, startIndex }">
-        从第 {{ startIndex }} 项开始, 共 {{ itemCount }} 项
-      </template>
-      <template #suffix="{ endIndex }">
-        从第 {{ endIndex }} 项结束
-      </template>
-    </n-pagination>
+    <div class="pagination">
+      <n-pagination
+          :item-count="201"
+          :page-sizes="[10, 20, 30, 40]"
+          show-size-picker
+      />
+    </div>
   </div>
 
 </template>
@@ -73,64 +82,62 @@
 import {FlashOutline} from '@vicons/ionicons5';
 import './index.scss';
 
+const selectable = (row) => row.job_title
+
+const handleSelectionChange = (val) => {
+  multipleSelection.value = val
+}
 
 const tableData = [
   {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
+    "interview_id": "I001",
+    "candidate_name": "张三",
+    "candidate_phone": "13812345678",
+    "candidate_email": "zhangsan@example.com",
+    "job_title": "Java开发工程师",
+    "interview_stage": "初面",
+    "interview_time": "2025-02-20 10:00",
+    "interview_location": "北京市海淀区XX大厦",
+    "interviewer": "李经理",
+    "interview_type": "视频面试",
+    "interview_status": "待面试",
+    "interview_feedback": null,
+    "remarks": "候选人有2年Java开发经验，需进一步评估技术能力",
+    "follow_up_action": "安排技术复面"
   },
   {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
+    "interview_id": "I002",
+    "candidate_name": "李四",
+    "candidate_phone": "13923456789",
+    "candidate_email": "lisi@example.com",
+    "job_title": "市场经理",
+    "interview_stage": "复面",
+    "interview_time": "2025-02-22 14:00",
+    "interview_location": "上海市浦东新区XX大厦",
+    "interviewer": "王总",
+    "interview_type": "现场面试",
+    "interview_status": "面试中",
+    "interview_feedback": "候选人有丰富的市场营销经验，沟通能力强，但薪资要求较高",
+    "remarks": "建议进一步谈判薪资",
+    "follow_up_action": "与候选人确认薪资要求"
   },
   {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-  {
-    date: '2016-05-08',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-  {
-    date: '2016-05-06',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-  {
-    date: '2016-05-07',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
+    "interview_id": "I003",
+    "candidate_name": "赵五",
+    "candidate_phone": "13734567890",
+    "candidate_email": "zhaowu@example.com",
+    "job_title": "产品经理",
+    "interview_stage": "终面",
+    "interview_time": "2025-02-25 09:00",
+    "interview_location": "深圳市南山区XX大厦",
+    "interviewer": "陈总",
+    "interview_type": "电话面试",
+    "interview_status": "已完成",
+    "interview_feedback": "候选人对产品管理有深入理解，创新能力强，面试表现优秀",
+    "remarks": "推荐录用",
+    "follow_up_action": "发送offer"
+  }
 ]
+
 
 </script>
