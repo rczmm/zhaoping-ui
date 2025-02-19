@@ -10,13 +10,13 @@
       <n-form-item label="Password">
         <n-input v-model:value="formData.password" placeholder="" style="height: 40px;border-radius: 10px" clearable/>
       </n-form-item>
-      <n-gradient-text type="info" class="forget-password">Forgot Password ?</n-gradient-text>
+      <n-gradient-text type="info" class="forget-password" @click="router.push('changePassword')">Forgot Password ?</n-gradient-text>
       <div class="button-div">
         <n-button type="primary" class="login-button" @click="login">登录</n-button>
       </div>
       <div class="signup">
         <n-text style="margin-right: 10px">New to MaterialM?</n-text>
-        <n-gradient-text type="info">Create an account
+        <n-gradient-text type="info" @click="router.push('register')">Create an account
         </n-gradient-text>
       </div>
     </n-form>

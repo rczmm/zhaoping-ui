@@ -31,6 +31,16 @@ const router = createRouter({
             name: 'anchor',
             component: anchor
         },
+        {
+            path: '/changePassword',
+            name: 'changePassword',
+            component: () => import('../components/change-password/index.vue'),
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: () => import('../components/profile-form/index.vue'),
+        },
     ]
 });
 

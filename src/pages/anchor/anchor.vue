@@ -8,7 +8,7 @@
         :ellipsis="false"
         @select="handleSelect"
     >
-      <el-menu-item index="0">
+      <el-menu-item>
         <img
             style="width: 100px"
             src="https://bootstrapdemos.wrappixel.com/materialM/dist/assets/images/logos/dark-logo.svg"
@@ -16,11 +16,11 @@
         />
       </el-menu-item>
       <el-menu-item index="position">后台系统</el-menu-item>
-      <el-sub-menu index="2">
+      <el-sub-menu>
         <template #title>个人中心</template>
-        <el-menu-item index="2-1">item one</el-menu-item>
-        <el-menu-item index="2-2">item two</el-menu-item>
-        <el-menu-item index="2-3">item three</el-menu-item>
+        <el-menu-item @click="profileForm">个人资料</el-menu-item>
+        <el-menu-item @click="handleLogout">退出登录</el-menu-item>
+        <el-menu-item @click="changePassword">修改密码</el-menu-item>
       </el-sub-menu>
     </el-menu>
 
@@ -62,19 +62,13 @@ import './index.scss';
 import interview from "@/pages/interview/interview.vue";
 import resume from "@/pages/resume/resume.vue";
 import candidate from "@/pages/candidate/candidate.vue";
+import router from "@/router/index.js";
+
 
 const menuOptions = [
   {
     label: '首页',
     key: 'index'
-  },
-  {
-    label: '注册',
-    key: 'register',
-  },
-  {
-    label: '登录',
-    key: 'login',
   },
   {
     label: '职位管理',
@@ -91,7 +85,7 @@ const menuOptions = [
   }
 ];
 
-const activeKey = ref('login'); // 初始化默认选中的菜单项
+const activeKey = ref('index'); // 初始化默认选中的菜单项
 
 const currentComponent = computed(() => {
   switch (activeKey.value) {
@@ -121,6 +115,20 @@ const handleMenuSelect = (key) => {
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath)
+}
+
+const handleLogout = () => {
+  console.log("退出登录")
+  localStorage.removeItem('isLoggedIn');
+  router.push('/login');
+}
+
+const changePassword = () => {
+  router.push('/changePassword');
+}
+
+const profileForm = () => {
+  router.push('/profile');
 }
 
 </script>

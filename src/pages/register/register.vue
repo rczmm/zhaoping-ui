@@ -24,7 +24,7 @@
       <div class="signup">
         <n-text style="margin-right: 10px">Already have an Account?
         </n-text>
-        <n-gradient-text type="info"> Sign In
+        <n-gradient-text type="info" @click="router.push('login')"> Sign In
         </n-gradient-text>
       </div>
     </n-form>
@@ -34,5 +34,6 @@
 
 <script setup lang="js">
 import './register.scss';
+import router from "@/router/index.js";
 
 </script>
