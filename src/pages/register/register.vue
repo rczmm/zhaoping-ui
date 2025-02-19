@@ -10,15 +10,17 @@
         <n-text>最适合你的管理方案</n-text>
       </div>
       <n-form-item label="Username">
-        <n-input v-model:value="inputValue" placeholder="" clearable/>
+        <n-input v-model:value="inputValue" placeholder="" style="height: 40px;border-radius: 10px" clearable/>
       </n-form-item>
       <n-form-item label="Email Address">
-        <n-input v-model:value="inputValue" placeholder="" clearable/>
+        <n-input v-model:value="inputValue" placeholder="" style="height: 40px;border-radius: 10px" clearable/>
       </n-form-item>
       <n-form-item label="Password">
-        <n-input v-model:value="inputValue" placeholder="" clearable/>
+        <n-input v-model:value="inputValue" placeholder="" style="height: 40px;border-radius: 10px" clearable/>
       </n-form-item>
-      <n-button type="primary" class="login-button">注册</n-button>
+      <div class="button-div">
+        <n-button type="primary" class="login-button">注册</n-button>
+      </div>
       <div class="signup">
         <n-text style="margin-right: 10px">Already have an Account?
         </n-text>

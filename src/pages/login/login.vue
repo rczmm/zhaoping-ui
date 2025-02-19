@@ -1,9 +1,6 @@
 <template>
   <div class="login-view">
     <n-form class="login-form" ref="LoginForm" :model="formData">
-      <div class="title">
-        <n-text type="info" size="40px">后台系统</n-text>
-      </div>
       <div class="desc">
         <n-text>最适合你的管理方案</n-text>
       </div>
@@ -14,7 +11,9 @@
         <n-input v-model:value="formData.password" placeholder="" style="height: 40px;border-radius: 10px" clearable/>
       </n-form-item>
       <n-gradient-text type="info" class="forget-password">Forgot Password ?</n-gradient-text>
-      <n-button type="primary" class="login-button" @click="login">登录</n-button>
+      <div class="button-div">
+        <n-button type="primary" class="login-button" @click="login">登录</n-button>
+      </div>
       <div class="signup">
         <n-text style="margin-right: 10px">New to MaterialM?</n-text>
         <n-gradient-text type="info">Create an account
