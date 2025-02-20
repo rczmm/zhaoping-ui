@@ -1,35 +1,25 @@
 <template>
-
   <div class="table-view">
-
     <div class="search-view">
       <div class="search-inputs">
-        <n-input round placeholder="请输入候选人姓名" class="search-item">
+        <n-input v-model:value="searchForm.candidate_name" round placeholder="请输入候选人姓名" class="search-item">
           <template #suffix>
             <n-icon :component="FlashOutline"/>
           </template>
         </n-input>
-        <n-input round placeholder="请输入职位名称" class="search-item">
+        <n-input v-model:value="searchForm.job_title" round placeholder="请输入职位名称" class="search-item">
           <template #suffix>
             <n-icon :component="FlashOutline"/>
           </template>
         </n-input>
-        <n-input round placeholder="请输入面试时间" class="search-item">
-          <template #suffix>
-            <n-icon :component="FlashOutline"/>
-          </template>
-        </n-input>
-        <n-input round placeholder="请输入面试状态" class="search-item">
-          <template #suffix>
-            <n-icon :component="FlashOutline"/>
-          </template>
-        </n-input>
+        <n-date-picker v-model:value="searchForm.interview_time" type="datetime" round placeholder="请选择面试时间" class="search-item" />
+        <n-select v-model:value="searchForm.interview_status" :options="interviewStatusOptions" round placeholder="请选择面试状态" class="search-item" />
       </div>
       <div class="search-oper">
-        <n-button type="primary" class="search-button" ghost>
+        <n-button type="primary" class="search-button" ghost @click="handleSearch">
           搜索
         </n-button>
-        <n-button type="info" class="search-button" ghost>
+        <n-button type="info" class="search-button" ghost @click="handleReset">
           重置
         </n-button>
       </div>
@@ -37,15 +27,14 @@
 
     <n-gradient-text class="title">面试列表</n-gradient-text>
 
-
     <div class="oper-button">
-      <n-button type="success" ghost>
+      <n-button type="success" ghost @click="handleSaveEdit(multipleSelection[0])" :disabled="multipleSelection.length !== 1">
         修改
       </n-button>
-      <n-button type="warning" ghost>
+      <n-button type="warning" ghost @click="handleCancel(multipleSelection[0])" :disabled="multipleSelection.length !== 1">
         取消
       </n-button>
-      <n-button type="error" ghost>
+      <n-button type="error" ghost @click="handleDelete(multipleSelection)" :disabled="multipleSelection.length === 0">
         删除
       </n-button>
     </div>
@@ -79,17 +68,47 @@
 </template>
 
 <script setup lang="js">
-
-import {FlashOutline} from '@vicons/ionicons5';
+import { ref, reactive } from 'vue';
+import { FlashOutline } from '@vicons/ionicons5';
+import { ElMessage } from 'element-plus';
 import './index.scss';
 
-const selectable = (row) => row.job_title
+const interviewStatusOptions = [
+  { label: '待面试', value: '待面试' },
+  { label: '面试中', value: '面试中' },
+  { label: '已完成', value: '已完成' },
+  { label: '已取消', value: '已取消' },
+  { label: '未通过', value: '未通过' }
+];
 
-const handleSelectionChange = (val) => {
-  multipleSelection.value = val
-}
+const showEditDialog = ref(false);
+const editForm = reactive({
+  interview_id: '',
+  candidate_name: '',
+  job_title: '',
+  interview_time: null,
+  interview_location: '',
+  interviewer: '',
+  interview_type: null,
+  interview_status: '',
+  remarks: ''
+});
 
-const tableData = [
+const searchForm = reactive({
+  candidate_name: '',
+  job_title: '',
+  interview_time: null,
+  interview_status: ''
+});
+
+const formatDate = (date) => {
+  if (!date) return '';
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return '';
+  return d.toISOString().slice(0, 16).replace('T', ' ');
+};
+
+const tableData = ref([
   {
     "interview_id": "I001",
     "candidate_name": "张三",
@@ -138,7 +157,66 @@ const tableData = [
     "remarks": "推荐录用",
     "follow_up_action": "发送offer"
   }
-]
+]);
+const handleSearch = () => {
+  // 这里应该调用后端API进行搜索
+  console.log('搜索条件：', {
+    ...searchForm,
+    interview_time: formatDate(searchForm.interview_time)
+  });
+};
+const handleReset = () => {
+  Object.assign(searchForm, {
+    candidate_name: '',
+    job_title: '',
+    interview_time: null,
+    interview_status: ''
+  });
+};
 
+const handleSaveEdit = async () => {
+  try {
+    // 这里应该调用后端API
+    const index = tableData.findIndex(item => item.interview_id === editForm.interview_id);
+    if (index !== -1) {
+      Object.assign(tableData[index], editForm);
+    }
+    showEditDialog.value = false;
+    ElMessage.success('修改成功');
+  } catch (error) {
+    ElMessage.error('修改失败');
+  }
+};
+
+const selectable = (row) => row.interview_status !== '已取消';
+
+const multipleSelection = ref([]);
+const handleSelectionChange = (val) => {
+  multipleSelection.value = val;
+};
+
+const handleDelete = async (rows) => {
+  if (!rows || rows.length === 0) {
+    ElMessage.warning('请选择要删除的面试记录');
+    return;
+  }
+
+  try {
+    await ElMessageBox.confirm('确认要删除选中的面试记录吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    });
+
+    // 这里应该调用后端API进行删除
+    const deleteIds = rows.map(row => row.interview_id);
+    tableData.value = tableData.value.filter(item => !deleteIds.includes(item.interview_id));
+    ElMessage.success('删除成功');
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('删除失败');
+    }
+  }
+};
 
 </script>
