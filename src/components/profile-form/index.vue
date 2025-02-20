@@ -3,7 +3,7 @@
     <!-- 个人资料展示卡片 -->
     <n-card class="profile-card">
       <div class="profile-header">
-        <n-avatar :src="formData.avatar[0]?.url || defaultAvatar" size="100"/>
+        <n-avatar :src="formData.avatar[0] || defaultAvatar" size="100"/>
         <div class="profile-info">
           <n-text class="profile-name">{{ formData.name || '姓名未设置' }}</n-text>
           <n-text class="profile-email">{{ formData.email || '邮箱未设置' }}</n-text>
@@ -62,7 +62,9 @@
 
 <script setup lang="js">
 const formData = ref({
-  avatar: [], // 头像
+  avatar: [
+    'https://i0.hdslb.com/bfs/archive/edf221c70fb714784ff56985499c8c429719c839.jpg'
+  ], // 头像
   name: '',    // 姓名
   email: '',   // 邮箱
   phone: ''    // 电话
@@ -110,46 +112,96 @@ const saveProfile = () => {
 
 <style scoped>
 .profile-container {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 20px auto;
+  gap: 30px;
+  padding: 0 20px;
 }
 
 .profile-card {
-  margin-bottom: 30px;
-  padding: 20px;
+  flex: 1;
+  margin-bottom: 0;
+  padding: 30px;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  height: fit-content;
+}
+
+.profile-form {
+  flex: 2;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .profile-header {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
 
 .profile-info {
-  margin-left: 20px;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .profile-name {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
 }
 
 .profile-email,
 .profile-phone {
-  font-size: 14px;
-  color: #777;
+  font-size: 16px;
+  color: #666;
+  display: block;
+}
+
+.desc {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 16px;
+}
+
+.desc .n-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
 }
 
 .avatar-preview {
-  margin-top: 10px;
+  margin-top: 16px;
 }
 
 .button-div {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .save-button {
   width: 100%;
+  height: 40px;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+  
+  .profile-card,
+  .profile-form {
+    width: 100%;
+  }
 }
 </style>
