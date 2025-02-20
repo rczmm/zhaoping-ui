@@ -28,16 +28,98 @@
     margin-right: 10px;
   }
 }
+.search-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px;
+  padding: 24px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.search-inputs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.search-item {
+  width: 100%;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.search-oper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.search-button {
+  min-width: 100px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.oper-button {
+  margin: 20px;
+  display: flex;
+  gap: 12px;
+  
+  button {
+    min-width: 100px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
 
 .title {
   display: flex;
-  justify-content: start;
-  font-size: 24px;
-  margin: auto 10px;
+  justify-content: left;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 24px 20px;
+  color: #2080f0;
 }
 
-.pagination{
-  margin: 10px;
+.pagination {
+  margin: 20px;
   display: flex;
-  justify-content: right;
+  justify-content: flex-end;
+}
+
+.table-view {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 20px;
+}
+
+.dialog-view {
+  .el-dialog {
+    border-radius: 8px;
+    overflow: hidden;
+    
+    .el-dialog__header {
+      background: #f9f9f9;
+      padding: 20px;
+      margin: 0;
+    }
+    
+    .el-dialog__body {
+      padding: 24px;
+    }
+  }
 }

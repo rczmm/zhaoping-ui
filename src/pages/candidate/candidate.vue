@@ -3,45 +3,46 @@
   <div class="table-view">
 
     <div class="search-view">
-      <n-input round placeholder="搜索" class="search-item">
-        <template #suffix>
-          <n-icon :component="FlashOutline"/>
-        </template>
-      </n-input>
-      <n-input round placeholder="搜索" class="search-item">
-        <template #suffix>
-          <n-icon :component="FlashOutline"/>
-        </template>
-      </n-input>
-      <n-input round placeholder="搜索" class="search-item">
-        <template #suffix>
-          <n-icon :component="FlashOutline"/>
-        </template>
-      </n-input>
-      <n-input round placeholder="搜索" class="search-item">
-        <template #suffix>
-          <n-icon :component="FlashOutline"/>
-        </template>
-      </n-input>
-    </div>
-
-    <div class="search-oper">
-      <n-button type="info" class="search-button">
-        搜索
-      </n-button>
-      <n-button type="info" class="search-button">
-        重置
-      </n-button>
+      <div class="search-inputs">
+        <n-input round placeholder="请输入候选人姓名" class="search-item">
+          <template #suffix>
+            <n-icon :component="FlashOutline"/>
+          </template>
+        </n-input>
+        <n-input round placeholder="请输入联系电话" class="search-item">
+          <template #suffix>
+            <n-icon :component="FlashOutline"/>
+          </template>
+        </n-input>
+        <n-input round placeholder="请输入学历要求" class="search-item">
+          <template #suffix>
+            <n-icon :component="FlashOutline"/>
+          </template>
+        </n-input>
+        <n-input round placeholder="请输入工作经验" class="search-item">
+          <template #suffix>
+            <n-icon :component="FlashOutline"/>
+          </template>
+        </n-input>
+      </div>
+      <div class="search-oper">
+        <n-button type="primary" class="search-button" ghost>
+          搜索
+        </n-button>
+        <n-button type="info" class="search-button" ghost>
+          重置
+        </n-button>
+      </div>
     </div>
 
     <n-gradient-text class="title">候选人列表</n-gradient-text>
 
 
     <div class="oper-button">
-      <n-button type="success">
+      <n-button type="success" ghost>
         通知候选人
       </n-button>
-      <n-button type="error">
+      <n-button type="error" ghost>
         删除候选人
       </n-button>
     </div>
