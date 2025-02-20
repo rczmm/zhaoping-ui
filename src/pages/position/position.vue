@@ -283,7 +283,7 @@ const handleValidateButtonClick = (e) => {
         const index = tableData.findIndex(item => item.job_title === multipleSelection.value[0].job_title);
         if (index !== -1) {
           tableData[index] = { ...tableData[index], ...formValues };
-          window.$message.success('更新成功');
+          ElMessage.success('更新成功');
         }
       } else {
         // 添加到表格数据中
