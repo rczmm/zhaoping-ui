@@ -4,29 +4,29 @@
 
     <div class="search-view">
       <div class="search-inputs">
-        <n-input round placeholder="请输入职位名称" class="search-item">
+        <n-input v-model:value="searchForm.jobTitle" round placeholder="请输入职位名称" class="search-item">
           <template #suffix>
             <n-icon :component="FlashOutline" />
           </template>
         </n-input>
-        <n-input round placeholder="请输入工作地点" class="search-item">
+        <n-input v-model:value="searchForm.workLocation" round placeholder="请输入工作地点" class="search-item">
           <template #suffix>
             <n-icon :component="FlashOutline" />
           </template>
         </n-input>
         <n-space class="search-item" style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-          <n-input-number round placeholder="最低薪资" size="small" :min="0" style="width: 120px" />
+          <n-input-number v-model:value="searchForm.minSalary" round placeholder="最低薪资" size="small" :min="0" style="width: 120px" />
           <span>-</span>
-          <n-input-number round placeholder="最高薪资" size="small" :min="0" style="width: 120px" />
+          <n-input-number v-model:value="searchForm.maxSalary" round placeholder="最高薪资" size="small" :min="0" style="width: 120px" />
           <span>k/月</span>
         </n-space>
-        <n-select round placeholder="请选择岗位类型" class="search-item" :options="generalOptions" />
+        <n-select v-model:value="searchForm.jobType" round placeholder="请选择岗位类型" class="search-item" :options="generalOptions" />
       </div>
       <div class="search-oper">
-        <n-button type="primary" class="search-button" ghost>
+        <n-button type="primary" class="search-button" ghost @click="handleSearch">
           搜索
         </n-button>
-        <n-button type="info" class="search-button" ghost>
+        <n-button type="info" class="search-button" ghost @click="handleReset">
           重置
         </n-button>
       </div>
@@ -116,11 +116,24 @@
             <n-input-number v-model:value="formData.recruitment_count" placeholder="输入招聘人数" :min="1" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="薪资范围(月薪/k)" path="salary_range">
-            <n-space>
-              <n-input-number v-model:value="value[0]" placeholder="最低薪资" size="small" :min="0"/>
-              <span>-</span>
-              <n-input-number v-model:value="value[1]" placeholder="最高薪资" size="small" :min="0" />
-              <span>k/月</span>
+            <n-space style="display: flex; align-items: center; white-space: nowrap;">
+              <n-slider
+                v-model:value="value"
+                range
+                :min="0"
+                :max="100"
+                :step="1"
+                :marks="{
+                  0: '0k',
+                  20: '20k',
+                  40: '40k',
+                  60: '60k',
+                  80: '80k',
+                  100: '100k'
+                }"
+                style="width: 300px"
+              />
+              <span>{{ value[0] }}k - {{ value[1] }}k/月</span>
             </n-space>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="发布日期" path="post_date">
@@ -429,5 +442,24 @@ const handleDelete = () => {
     });
     ElMessage.success('删除成功');
   }).catch(() => { })
+}
+const searchForm = ref({
+  jobTitle: '',
+  workLocation: '',
+  minSalary: null,
+  maxSalary: null,
+  jobType: null
+});
+
+const handleSearch = () => {
+  alert(`搜索条件：\n职位名称：${searchForm.value.jobTitle}\n工作地点：${searchForm.value.workLocation}\n薪资范围：${searchForm.value.minSalary || 0}k - ${searchForm.value.maxSalary || 0}k\n岗位类型：${searchForm.value.jobType || '未选择'}`)
+}
+
+const handleReset = () => {
+  searchForm.value.jobTitle = '';
+  searchForm.value.workLocation = '';
+  searchForm.value.minSalary = null;
+  searchForm.value.maxSalary = null;
+  searchForm.value.jobType = null;
 }
 </script>
