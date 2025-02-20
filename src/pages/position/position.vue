@@ -46,12 +46,12 @@
       <n-button type="success" @click="handleEdit" ghost>
         编辑岗位
       </n-button>
-      <n-button type="warning" ghost>
-        停用岗位
-      </n-button>
-      <n-button type="error" ghost>
-        删除岗位
-      </n-button>
+        <n-button type="warning" ghost @click="handleDisable">
+          停用岗位
+        </n-button>
+        <n-button type="error" ghost @click="handleDelete">
+          删除岗位
+        </n-button>
     </div>
 
     <n-divider></n-divider>
@@ -205,7 +205,7 @@ import {FlashOutline} from '@vicons/ionicons5';
 import './index.scss';
 import type {TableInstance} from 'element-plus';
 import {ref} from 'vue';
-import { useMessage } from 'naive-ui';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 const formRef = ref();
 
@@ -398,5 +398,55 @@ const tableData = [
   }
 ]
 
+const handleDisable = () => {
+  if (multipleSelection.value.length === 0) {
+    ElMessage.warning('请选择要停用的岗位');
+    return;
+  }
+  
+  ElMessageBox.confirm(
+    `确定要停用选中的${multipleSelection.value.length}个岗位吗？`,
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+    // 模拟停用操作
+    multipleSelection.value.forEach(item => {
+      const index = tableData.findIndex(data => data.job_title === item.job_title);
+      if (index !== -1) {
+        tableData[index].job_status = '已停用';
+      }
+    });
+    ElMessage.success('停用成功');
+  }).catch(() => {})
+}
 
+const handleDelete = () => {
+  if (multipleSelection.value.length === 0) {
+    ElMessage.warning('请选择要删除的岗位');
+    return;
+  }
+
+  ElMessageBox.confirm(
+    `确定要删除选中的${multipleSelection.value.length}个岗位吗？此操作不可恢复！`,
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'error',
+    }
+  ).then(() => {
+    // 模拟删除操作
+    multipleSelection.value.forEach(item => {
+      const index = tableData.findIndex(data => data.job_title === item.job_title);
+      if (index !== -1) {
+        tableData.splice(index, 1);
+      }
+    });
+    ElMessage.success('删除成功');
+  }).catch(() => {})
+}
 </script>
