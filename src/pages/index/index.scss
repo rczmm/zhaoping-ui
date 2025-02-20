@@ -1,66 +1,93 @@
 .page-container {
   background-color: rgb(248, 250, 253);
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .chart {
   display: flex;
-  margin: auto 20px;
-  width: auto;
-  padding: 20px;
+  width: 100%;
+  gap: 20px;
   overflow: hidden;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .line-chart {
   background-color: rgb(255, 255, 255);
   height: 350px;
-  border-radius: 30px;
+  border-radius: 16px;
+  flex: 1;
+  min-width: 600px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .small-chart {
-  margin-left: 10px;
   height: 350px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
 }
 
-.bar-chart-small {
-  border-radius: 20px;
+.bar-chart-small, .line-chart-small {
+  border-radius: 16px;
   height: 170px;
-  width: 400px;
-}
-
-.line-chart-small {
-  border-radius: 20px;
-  margin-top: 20px;
-  height: 170px;
-  width: 400px;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .rank-list {
   display: flex;
-  margin: 20px 30px;
-  padding: 10px;
+  margin-top: 20px;
+  gap: 20px;
   overflow: hidden;
   align-items: start;
-  width: auto;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .popular-rank {
-  width: 80%;
-  margin-right: 30px;
+  flex: 3;
+  min-width: 600px;
 }
 
 .popular-list {
-  width: auto;
-  border-radius: 20px;
+  width: 100%;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 }
 
-.earn-list{
-  width: auto;
-  border-radius: 20px;
-  display: flex;
-  justify-content: right;
+.earn-rank {
+  flex: 1;
+  min-width: 300px;
+}
+
+.earn-list {
+  width: 100%;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .attention-item {

@@ -5,25 +5,25 @@
 
       <n-card title="招聘渠道" hoverable class="line-chart">
         <template #header-extra>
-          <n-select v-model:value="value" :options="options"/>
+          <n-select v-model:value="value" :options="options" />
         </template>
-        <v-chart :option="lineOption" autoresize/>
+        <v-chart :option="lineOption" autoresize />
       </n-card>
 
       <div class="small-chart">
 
         <n-card title="招聘目标" hoverable class="bar-chart-small">
           <template #header-extra>
-            <n-select v-model:value="value" :options="options"/>
+            <n-select v-model:value="value" :options="options" />
           </template>
-          <v-chart :option="barOption" autoresize/>
+          <v-chart :option="barOption" autoresize />
         </n-card>
 
         <n-card title="入职人数" hoverable class="line-chart-small">
           <template #header-extra>
-            <n-select v-model:value="value" :options="options"/>
+            <n-select v-model:value="value" :options="options" />
           </template>
-          <v-chart :option="smallLineOption" autoresize/>
+          <v-chart :option="smallLineOption" autoresize />
         </n-card>
       </div>
 
@@ -37,42 +37,31 @@
             <n-gradient-text>最热门的九个岗位</n-gradient-text>
           </template>
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="post" label="岗位"/>
-            <el-table-column prop="price" label="薪资范围"/>
+            <el-table-column prop="post" label="岗位" />
+            <el-table-column prop="price" label="薪资范围" />
             <el-table-column prop="attention" label="已投递|看过" width="180">
               <template #default="scope">
                 <div class="attention-item">
                   <n-text>{{ tableData[scope.$index].attention }} (人)</n-text>
-                  <n-progress
-                      style="width: 100%"
-                      type="line"
-                      :percentage="tableData[scope.$index].value"
-                      :show-indicator="false"
-                      :color="{ stops: ['#E3F2FD', '#2080f0'] }"
-                  />
+                  <n-progress style="width: 100%" type="line" :percentage="tableData[scope.$index].value"
+                    :show-indicator="false" :color="{ stops: ['#E3F2FD', '#2080f0'] }" />
                 </div>
               </template>
 
             </el-table-column>
             <el-table-column prop="num" label="招聘进度">
               <template #default="scope">
-                <el-progress
-                    :percentage="100"
-                    :stroke-width="15"
-                    striped
-                    striped-flow
-                    :duration="10"
-                />
+                <el-progress :percentage="100" :stroke-width="15" striped striped-flow :duration="10" />
               </template>
             </el-table-column>
-            <el-table-column prop="value" label="剩余岗位"/>
-            <el-table-column prop="value" label="岗位性质"/>
+            <el-table-column prop="value" label="剩余岗位" />
+            <el-table-column prop="value" label="岗位性质" />
             <el-table-column fixed="right" label="" min-width="120">
               <template #default="scope">
                 <n-dropdown trigger="hover" :options="options" @select="handleSelect">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon-tabler icon-tabler-dots-vertical" width="20px"
-                       height="20px" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                       stroke-linecap="round" stroke-linejoin="round" color="grey100">
+                    height="20px" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round" color="grey100">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
                     <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
@@ -87,14 +76,30 @@
       <div class="earn-rank">
         <n-card title="新增岗位" hoverable class="earn-list">
           <el-table :data="reportData">
-            <el-table-column label="岗位" width="180">
+            <el-table-column label="岗位">
               <template #default="scope">
                 <div class="report-item">
                   <div class="item-info">
                     <n-text>{{ scope.row.post }}</n-text>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template #default="scope">
+                <div class="report-item">
+                  <div class="item-info">
                     <n-text>+ {{ scope.row.num }}</n-text>
                   </div>
-                  <n-tag type="success">^ {{ scope.row.value }}</n-tag>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template #default="scope">
+                <div class="report-item">
+                  <div class="item-info">
+                    <n-tag type="success">^ {{ scope.row.value }}</n-tag>
+                  </div>
                 </div>
               </template>
             </el-table-column>
@@ -108,8 +113,8 @@
 </template>
 <script setup lang="ts">
 import './index.scss';
-import {use} from 'echarts/core'
-import {BarChart, LineChart} from 'echarts/charts'
+import { use } from 'echarts/core'
+import { BarChart, LineChart } from 'echarts/charts'
 import {
   GridComponent,
   LegendComponent,
@@ -119,9 +124,9 @@ import {
   TooltipComponent,
   VisualMapComponent
 } from 'echarts/components'
-import {CanvasRenderer} from 'echarts/renderers'
+import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts';
-import {ref,} from 'vue';
+import { ref, } from 'vue';
 
 use([
   TitleComponent,
@@ -299,8 +304,8 @@ const smallLineOption = ref({
       },
       markLine: {
         symbol: ['none', 'none'],
-        label: {show: false},
-        data: [{xAxis: 1}, {xAxis: 3}, {xAxis: 5}, {xAxis: 7}]
+        label: { show: false },
+        data: [{ xAxis: 1 }, { xAxis: 3 }, { xAxis: 5 }, { xAxis: 7 }]
       },
       areaStyle: {},
       data: [
