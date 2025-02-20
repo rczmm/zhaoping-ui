@@ -1,34 +1,108 @@
 .login-view {
-  background-color: rgb(248, 250, 253);
+  background: url('/src/assets/login-bg.jpg') center/cover no-repeat;
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+  }
 }
 
 .login-form {
-  background-color: rgb(255, 255, 255);
-  width: 35%;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 400px;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 0.5s ease-out;
 
-.title {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-  font-size: 48px;
+  .desc {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .n-form-item {
+    margin-bottom: 20px;
+  }
+
+  .n-input {
+    transition: all 0.3s ease;
+
+    &:hover, &:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+  }
 }
 
 .forget-password {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
+  margin: -10px 0 20px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
+.button-div {
+  margin: 30px 0;
+
+  .login-button {
+    width: 100%;
+    height: 44px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
 
 .signup {
   display: flex;
   justify-content: center;
+  align-items: center;
+  font-size: 14px;
+
+  .n-gradient-text {
+    cursor: pointer;
+    transition: opacity 0.3s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

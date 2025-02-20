@@ -27,6 +27,7 @@
 import "./index.scss";
 import {useRouter} from 'vue-router'; //  导入 useRouter
 import {useAuthStore} from '@/stores/auth';
+import { reactive } from 'vue';
 
 const formData = reactive({
   username: "",

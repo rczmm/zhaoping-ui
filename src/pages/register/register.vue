@@ -3,9 +3,6 @@
   <div class="register-view">
     <n-form class="register-form">
 
-      <div class="title">
-        <n-gradient-text type="info" size="25px">后台系统</n-gradient-text>
-      </div>
       <div class="desc">
         <n-text>最适合你的管理方案</n-text>
       </div>

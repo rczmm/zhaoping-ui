@@ -1,4 +1,5 @@
 <template>
+  <div class="change-password-view">
   <n-form class="change-password-form" ref="ChangePasswordForm" :model="formData">
     <div class="desc">
       <n-text>修改你的密码</n-text>
@@ -42,9 +43,14 @@
       <n-button type="primary" class="change-password-button" @click="changePassword">提交修改</n-button>
     </div>
   </n-form>
+    
+  </div>
 </template>
 
 <script setup lang="js">
+
+import './change-password.scss'
+
 const formData = ref({
   currentPassword: '', // 当前密码
   newPassword: '', // 新密码
