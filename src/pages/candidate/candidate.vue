@@ -4,32 +4,24 @@
 
     <div class="search-view">
       <div class="search-inputs">
-        <n-input round placeholder="请输入候选人姓名" class="search-item">
+        <n-input v-model:value="searchForm.candidate_name" round placeholder="请输入候选人姓名" class="search-item">
           <template #suffix>
             <n-icon :component="FlashOutline"/>
           </template>
         </n-input>
-        <n-input round placeholder="请输入联系电话" class="search-item">
+        <n-input v-model:value="searchForm.candidate_phone" round placeholder="请输入联系电话" class="search-item">
           <template #suffix>
             <n-icon :component="FlashOutline"/>
           </template>
         </n-input>
-        <n-input round placeholder="请输入学历要求" class="search-item">
-          <template #suffix>
-            <n-icon :component="FlashOutline"/>
-          </template>
-        </n-input>
-        <n-input round placeholder="请输入工作经验" class="search-item">
-          <template #suffix>
-            <n-icon :component="FlashOutline"/>
-          </template>
-        </n-input>
+        <n-select v-model:value="searchForm.candidate_education" :options="educationOptions" round placeholder="请选择学历要求" class="search-item" />
+        <n-select v-model:value="searchForm.candidate_experience" :options="experienceOptions" round placeholder="请选择工作经验" class="search-item" />
       </div>
       <div class="search-oper">
-        <n-button type="primary" class="search-button" ghost>
+        <n-button type="primary" class="search-button" ghost @click="handleSearch">
           搜索
         </n-button>
-        <n-button type="info" class="search-button" ghost>
+        <n-button type="info" class="search-button" ghost @click="handleReset">
           重置
         </n-button>
       </div>
@@ -39,10 +31,10 @@
 
 
     <div class="oper-button">
-      <n-button type="success" ghost>
+      <n-button type="success" ghost @click="handleNotify(multipleSelection[0])" :disabled="multipleSelection.length !== 1">
         通知候选人
       </n-button>
-      <n-button type="error" ghost>
+      <n-button type="error" ghost @click="handleDelete(multipleSelection)" :disabled="multipleSelection.length === 0">
         删除候选人
       </n-button>
     </div>
@@ -83,24 +75,110 @@
 </template>
 
 <script setup lang="js">
-
-import {FlashOutline} from '@vicons/ionicons5';
+import { ref, reactive } from 'vue';
+import { FlashOutline } from '@vicons/ionicons5';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import './index.scss';
 
-const selectable = (row) => row.job_title
+const educationOptions = [
+  { label: '博士', value: '博士' },
+  { label: '硕士', value: '硕士' },
+  { label: '本科', value: '本科' },
+  { label: '大专', value: '大专' },
+  { label: '高中/中专', value: '高中/中专' },
+  { label: '其他', value: '其他' }
+];
 
+const experienceOptions = [
+  { label: '应届生', value: '应届生' },
+  { label: '1-3年', value: '1-3年' },
+  { label: '3-5年', value: '3-5年' },
+  { label: '5-10年', value: '5-10年' },
+  { label: '10年以上', value: '10年以上' }
+];
+
+const searchForm = reactive({
+  candidate_name: '',
+  candidate_phone: '',
+  candidate_education: null,
+  candidate_experience: null
+});
+
+const handleSearch = () => {
+  console.log('搜索条件：', searchForm);
+};
+
+const handleReset = () => {
+  Object.assign(searchForm, {
+    candidate_name: '',
+    candidate_phone: '',
+    candidate_education: null,
+    candidate_experience: null
+  });
+};
+
+const selectable = (row) => row.hiring_status !== '已拒绝';
+
+const multipleSelection = ref([]);
 const handleSelectionChange = (val) => {
-  multipleSelection.value = val
-}
+  multipleSelection.value = val;
+};
 
-const tableData = [
+const handleNotify = async (row) => {
+  if (!row) {
+    ElMessage.warning('请选择要通知的候选人');
+    return;
+  }
+
+  try {
+    await ElMessageBox.confirm('确认要通知该候选人吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'info'
+    });
+
+    // 这里应该调用后端API进行通知
+    console.log('通知候选人：', row.candidate_id);
+    ElMessage.success('通知发送成功');
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('通知发送失败');
+    }
+  }
+};
+
+const handleDelete = async (rows) => {
+  if (!rows || rows.length === 0) {
+    ElMessage.warning('请选择要删除的候选人');
+    return;
+  }
+
+  try {
+    await ElMessageBox.confirm('确认要删除选中的候选人吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    });
+
+    // 这里应该调用后端API进行删除
+    const deleteIds = rows.map(row => row.candidate_id);
+    tableData.value = tableData.value.filter(item => !deleteIds.includes(item.candidate_id));
+    ElMessage.success('删除成功');
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('删除失败');
+    }
+  }
+};
+
+const tableData = ref([
   {
     "candidate_id": "C001",
     "candidate_name": "张三",
     "candidate_phone": "13812345678",
     "candidate_email": "zhangsan@example.com",
     "candidate_gender": "男",
-    "candidate_dob": "1990-01-01",  // 出生日期
+    "candidate_dob": "1990-01-01",
     "candidate_address": "北京市海淀区XX街道",
     "candidate_nationality": "中国",
     "candidate_education": "本科",
@@ -209,7 +287,6 @@ const tableData = [
     "hiring_status": "已拒绝",
     "remarks": "简历不符合要求，已拒绝"
   }
-]
-
+]);
 
 </script>
