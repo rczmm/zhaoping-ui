@@ -9,15 +9,6 @@ const router = createRouter({
     history: createWebHashHistory(""),
     routes: [
         {
-            path: '/mail',
-            name: 'mail',
-            component: () => import('../pages/mail/mail.vue'),
-            meta: {
-                requiresAuth: true,
-                title: '邮件管理'
-            }
-        },
-        {
             path: '/',
             name: 'home',
             component: anchor,
@@ -26,41 +17,14 @@ const router = createRouter({
             }
         },
         {
-            path: '/mail',
-            name: 'mail',
-            component: () => import('../pages/mail/mail.vue'),
-            meta: {
-                requiresAuth: true,
-                title: '邮件管理'
-            }
-        },
-        {
             path: '/login',
             name: 'login',
             component: login
         },
         {
-            path: '/mail',
-            name: 'mail',
-            component: () => import('../pages/mail/mail.vue'),
-            meta: {
-                requiresAuth: true,
-                title: '邮件管理'
-            }
-        },
-        {
             path: '/register',
             name: 'register',
             component: register
-        },
-        {
-            path: '/mail',
-            name: 'mail',
-            component: () => import('../pages/mail/mail.vue'),
-            meta: {
-                requiresAuth: true,
-                title: '邮件管理'
-            }
         },
         {
             path: '/anchor',
@@ -82,19 +46,15 @@ const router = createRouter({
             component: () => import('../components/change-password/index.vue'),
         },
         {
-            path: '/mail',
-            name: 'mail',
-            component: () => import('../pages/mail/mail.vue'),
-            meta: {
-                requiresAuth: true,
-                title: '邮件管理'
-            }
-        },
-        {
             path: '/profile',
             name: 'profile',
             component: () => import('../components/profile-form/index.vue'),
         },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: () => import('../pages/404/404.vue')
+        }
     ]
 });
 
