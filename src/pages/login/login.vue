@@ -28,6 +28,10 @@ import "./index.scss";
 import {useRouter} from 'vue-router'; //  导入 useRouter
 import {useAuthStore} from '@/stores/auth';
 import { reactive } from 'vue';
+import authAPI from '@/api/auth/auth.js';
+import { useMessage } from 'naive-ui';
+
+const message = useMessage();
 
 const formData = reactive({
   username: "",
@@ -39,14 +43,24 @@ const authStore = useAuthStore(); //  获取 auth store 实例
 
 
 const login = () => {
-  if (formData.username != null) {
-    authStore.login();
-    authStore.persistLoginStatus(); // 持久化登录状态 (示例使用 localStorage)
-//  登录成功后，跳转到首页
-    router.push('/');
+  // 表单验证
+  if (!formData.username || !formData.password) {
+    message.error('请输入用户名和密码');
+    return;
   }
-  console.log("登录失败")
 
+  // 调用登录接口
+  authAPI.login(formData)
+    .then(res => {
+      authStore.login(res.data.token);
+      authStore.persistLoginStatus();
+      message.success('登录成功');
+      router.push('/');
+    })
+    .catch(err => {
+      console.error('登录失败:', err);
+      message.error(err.response?.data?.message || '登录失败');
+    });
 }
 
 
