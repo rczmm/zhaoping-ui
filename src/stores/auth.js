@@ -3,32 +3,73 @@ import {defineStore} from 'pinia'
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         isLoggedIn: false, //  初始状态：未登录
-        // 可以添加其他用户相关信息，例如用户名、用户ID 等
+        token: null,
+        userId: null,
+        username: null,
+        nickname: null,
+        avatar: null
     }),
     getters: {
         // 可以添加 getter 来派生状态，例如
         // isAuthenticated: (state) => state.isLoggedIn,
     },
     actions: {
-        login() {
-            //  模拟登录成功，实际应用中这里会调用后端 API 验证登录信息
-            this.isLoggedIn = true
-            //  登录成功后，可以保存一些用户信息到 store 中，或者 localStorage 等
+        login(userData) {
+            // 设置登录状态
+            this.isLoggedIn = true;
+            // 保存用户信息
+            this.token = userData.token;
+            this.userId = userData.userId;
+            this.username = userData.username;
+            this.nickname = userData.nickname;
+            this.avatar = userData.avatar;
+            // 将token保存到localStorage
+            localStorage.setItem('token', userData.token);
+            // 将用户信息保存到localStorage
+            localStorage.setItem('userInfo', JSON.stringify({
+                userId: userData.userId,
+                username: userData.username,
+                nickname: userData.nickname,
+                avatar: userData.avatar
+            }));
             console.log('用户已登录');
         },
         logout() {
-            //  模拟登出，实际应用中可能需要清除 token 等
-            this.isLoggedIn = false
-            //  登出后，可以清除 store 中的用户信息，或者 localStorage 等
+            // 清除登录状态
+            this.isLoggedIn = false;
+            // 清除用户信息
+            this.token = null;
+            this.userId = null;
+            this.username = null;
+            this.nickname = null;
+            this.avatar = null;
+            // 清除localStorage中的token和用户信息
+            localStorage.removeItem('token');
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('isLoggedIn');
             console.log('用户已登出');
         },
         checkLoginStatus() {
-            //  在应用初始化时或者页面加载时，检查用户是否已经登录过
-            //  实际应用中可能需要检查 localStorage 中是否有 token，或者调用后端 API 验证 token 是否有效
-            //  这里简单模拟，您可以根据实际情况修改逻辑
-            const storedLoginStatus = localStorage.getItem('isLoggedIn'); // 示例：从 localStorage 获取
-            if (storedLoginStatus === 'true') {
+            // 检查localStorage中是否有token
+            const token = localStorage.getItem('token');
+            const userInfoStr = localStorage.getItem('userInfo');
+            
+            if (token) {
                 this.isLoggedIn = true;
+                this.token = token;
+                
+                // 恢复用户信息
+                if (userInfoStr) {
+                    try {
+                        const userInfo = JSON.parse(userInfoStr);
+                        this.userId = userInfo.userId;
+                        this.username = userInfo.username;
+                        this.nickname = userInfo.nickname;
+                        this.avatar = userInfo.avatar;
+                    } catch (e) {
+                        console.error('解析用户信息失败', e);
+                    }
+                }
             } else {
                 this.isLoggedIn = false;
             }

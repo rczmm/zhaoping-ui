@@ -52,10 +52,19 @@ const login = () => {
   // 调用登录接口
   authAPI.login(formData)
     .then(res => {
-      authStore.login(res.data.token);
-      authStore.persistLoginStatus();
-      message.success('登录成功');
-      router.push('/');
+      // 检查响应状态
+      if (res.code === 200) {
+        // 使用返回的用户数据更新store
+        authStore.login(res.data);
+        authStore.persistLoginStatus();
+        // 显示成功消息
+        message.success(res.message || '登录成功');
+        // 跳转到首页
+        router.push('/anchor');
+      } else {
+        // 处理其他状态码
+        message.error(res.message || '登录失败');
+      }
     })
     .catch(error => {
       console.error('登录失败:', error);
