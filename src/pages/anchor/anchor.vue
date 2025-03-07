@@ -45,7 +45,10 @@ import router from "@/router/index.js";
 import mail from "@/pages/mail/mail.vue";
 import notes from "@/pages/notes/notes.vue";
 import chat from "@/pages/chat/chat.vue";
+import {useAuthStore} from '@/stores/auth';
+import { useMessage } from 'naive-ui';
 
+const message = useMessage();
 
 const menuOptions = [
   {
@@ -109,14 +112,20 @@ const handleMenuSelect = (key) => {
   activeKey.value = key;
 };
 
+const authStore = useAuthStore();
+
 const activeIndex = ref('1')
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath)
 }
 
 const handleLogout = () => {
-  console.log("退出登录")
-  localStorage.removeItem('isLoggedIn');
+  console.log("退出登录");
+  // 调用authStore的logout方法清除用户信息和登录状态
+  authStore.logout();
+  // 显示成功消息
+  message.success('退出登录成功');
+  // 重定向到登录页面
   router.push('/login');
 }
 
