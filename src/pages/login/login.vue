@@ -57,9 +57,9 @@ const login = () => {
       message.success('登录成功');
       router.push('/');
     })
-    .catch(err => {
-      console.error('登录失败:', err);
-      message.error(err.response?.data?.message || '登录失败');
+    .catch(error => {
+      console.error('登录失败:', error);
+      message.error(error.message);
     });
 }
 

@@ -19,11 +19,14 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   response => {
+    if (response.data.code && response.data.code !== 200) {
+      return Promise.reject(new Error(response.data.message || '请求失败'));
+    }
     return response.data;
   },
   error => {
-    // 统一错误处理逻辑
-    return Promise.reject(error);
+    const message = error.response?.data?.message || error.message;
+    return Promise.reject(new Error(message));
   }
 );
 

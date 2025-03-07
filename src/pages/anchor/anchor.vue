@@ -29,7 +29,6 @@
     </n-space>
   </div>
 
-
 </template>
 
 <script setup lang="js">
