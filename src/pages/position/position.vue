@@ -53,7 +53,7 @@
 
     <n-divider></n-divider>
 
-    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange" v-loading="loading">
       <el-table-column type="selection" width="55" :selectable="selectable" />
       <el-table-column fixed prop="job_title" label="职位名称" show-overflow-tooltip />
       <el-table-column prop="job_type" label="职位类别">
@@ -86,7 +86,15 @@
     </el-table>
 
     <div class="pagination">
-      <n-pagination :item-count="201" :page-sizes="[10, 20, 30, 40]" show-size-picker />
+      <n-pagination 
+        v-model:page="pagination.page" 
+        v-model:page-size="pagination.pageSize" 
+        :item-count="pagination.total" 
+        :page-sizes="[10, 20, 30, 40]" 
+        show-size-picker 
+        @update:page="handlePageChange" 
+        @update:page-size="handlePageSizeChange"
+      />
     </div>
   </div>
 
@@ -190,7 +198,6 @@
     </el-dialog>
 
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -198,8 +205,9 @@
 import { FlashOutline } from '@vicons/ionicons5';
 import './index.scss';
 import type { TableInstance } from 'element-plus';
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { getPositionList, addPosition, updatePosition, deletePosition, changePositionStatus } from '@/api/position/index.js';
 
 const formRef = ref();
 
@@ -267,41 +275,45 @@ const printInfo = () => {
   dialogShow.value = true;
   console.log(multipleSelection.value);
 }
-
-const handleValidateButtonClick = (e) => {
-  e.preventDefault();
-  formRef.value?.validate((errors) => {
+((errors) => {
     if (!errors) {
       const formValues = {
-        ...formData,
+        ...formData.value,
         salary_range: `￥${value.value[0]}k - ￥${value.value[1]}k/月`,
-        post_date: formData.post_date ? new Date(formData.post_date).toISOString().split('T')[0] : null
+        post_date: formData.value.post_date ? new Date(formData.value.post_date).toISOString().split('T')[0] : null
       };
 
       if (isEdit.value) {
-        // 模拟更新操作
-        const index = tableData.findIndex(item => item.job_title === multipleSelection.value[0].job_title);
-        if (index !== -1) {
-          tableData[index] = { ...tableData[index], ...formValues };
+        // 调用更新API
+        updatePosition(formValues).then(() => {
           ElMessage.success('更新成功');
-        }
+          fetchPositionList(); // 刷新列表
+          dialogShow.value = false;
+        }).catch(error => {
+          ElMessage.error(`更新失败: ${error.message}`);
+        });
       } else {
-        // 添加到表格数据中
-        tableData.unshift(formValues);
+        // 调用添加API
+        addPosition(formValues).then(() => {
+          ElMessage.success('添加成功');
+          fetchPositionList(); // 刷新列表
+          dialogShow.value = false;
+        }).catch(error => {
+          ElMessage.error(`添加失败: ${error.message}`);
+        });
       }
 
-      // 关闭对话框并重置表单
-      dialogShow.value = false;
+      // 重置表单
       formRef.value?.restoreValidation();
-      Object.keys(formData).forEach(key => {
-        if (Array.isArray(formData[key])) {
-          formData[key] = [];
-        } else if (typeof formData[key] === 'boolean') {
-          formData[key] = false;
-        } else if (typeof formData[key] === 'number') {
-          formData[key] = 0;
+      Object.keys(formData.value).forEach(key => {
+        if (Array.isArray(formData.value[key])) {
+          formData.value[key] = [];
+        } else if (typeof formData.value[key] === 'boolean') {
+          formData.value[key] = false;
+        } else if (typeof formData.value[key] === 'number') {
+          formData.value[key] = 0;
         } else {
-          formData[key] = '';
+          formData.value[key] = '';
         }
       });
       value.value = [0, 0];
@@ -312,85 +324,112 @@ const handleValidateButtonClick = (e) => {
   });
 }
 
-const tableData = [
-  {
-    "job_title": "Java开发工程师",
-    "job_type": "全职",
-    "job_description": "负责公司产品的后端开发工作，编写高质量的代码，参与系统架构设计与优化，进行性能调优等。",
-    "recruitment_count": 5,
-    "work_location": "北京市海淀区",
-    "salary_range": "￥12,000 - ￥18,000/月",
-    "benefits": [
-      "五险一金",
-      "带薪年假",
-      "弹性工作制",
-      "年终奖"
-    ],
-    "education_requirements": "本科及以上",
-    "experience_requirements": "2年以上Java开发经验",
-    "skills_requirements": [
-      "精通Java编程语言，熟悉Spring框架",
-      "熟悉MySQL数据库"
-    ],
-    "language_requirements": "英语六级以上",
-    "other_requirements": "良好的沟通能力和团队协作精神",
-    "job_status": "开放中",
-    "post_date": "2025-02-01",
-    "close_date": "2025-03-01",
-    "interview_info": {
-      "interview_stage": "初面",
-      "interview_time": "2025-02-15 10:00",
-      "interview_location": "北京市海淀区XX大厦",
-      "interviewer": "张经理"
-    },
-    "promotion_path": "初级开发工程师 → 中级开发工程师 → 高级开发工程师",
-    "job_tags": [
-      "技术岗位",
-      "后端开发"
-    ],
-    "department": "技术部",
-    "recruitment_source": "在线招聘平台"
-  },
-  {
-    "job_title": "市场经理",
-    "job_type": "全职",
-    "job_description": "负责市场调研与推广，制定市场策略，开拓新客户，维护老客户，提升品牌影响力。",
-    "recruitment_count": 3,
-    "work_location": "上海市浦东新区",
-    "salary_range": "￥15,000 - ￥25,000/月",
-    "benefits": [
-      "五险一金",
-      "带薪年假",
-      "团队旅游",
-      "股票期权"
-    ],
-    "education_requirements": "本科及以上，市场营销专业优先",
-    "experience_requirements": "5年以上市场营销经验",
-    "skills_requirements": [
-      "良好的市场分析能力",
-      "优秀的沟通与谈判技巧",
-      "熟练使用办公软件"
-    ],
-    "language_requirements": "流利的英语口语和写作能力",
-    "other_requirements": "能够承受较大工作压力，具备较强的团队合作精神",
-    "job_status": "开放中",
-    "post_date": "2025-02-05",
-    "close_date": "2025-03-05",
-    "interview_info": {
-      "interview_stage": "复面",
-      "interview_time": "2025-02-20 14:00",
-      "interview_location": "上海市浦东新区XX大厦",
-      "interviewer": "李总"
-    },
-    "promotion_path": "市场专员 → 市场经理 → 市场总监",
-    "job_tags": [
-      "市场岗位",
-      "销售"
-    ],
-    "department": "市场部",
-    "recruitment_source": "猎头"
-  }
-]
+// 表格数据
+const tableData = ref([]);
+// 加载状态
+const loading = ref(false);
+
+// 分页配置
+const pagination = reactive({
+  page: 1,
+  pageSize: 10,
+  total: 0
+});
+
+// 处理页码变化
+const handlePageChange = (page) => {
+  pagination.page = page;
+  fetchPositionList();
+};
+
+// 处理每页条数变化
+const handlePageSizeChange = (pageSize) => {
+  pagination.pageSize = pageSize;
+  pagination.page = 1; // 重置到第一页
+  fetchPositionList();
+};
+
+// 获取职位列表数据
+const fetchPositionList = () => {
+  loading.value = true;
+  const params = {
+    page: pagination.page,
+    pageSize: pagination.pageSize,
+    ...searchForm.value
+  };
+  
+  getPositionList(params).then(res => {
+    tableData.value = res.data.list;
+    pagination.total = res.data.total;
+    loading.value = false;
+  }).catch(error => {
+    ElMessage.error(`获取职位列表失败: ${error.message}`);
+    loading.value = false;
+    // 使用模拟数据
+    tableData.value = [
+      {
+        "job_title": "Java开发工程师",
+        "job_type": "全职",
+        "job_description": "负责公司产品的后端开发工作，编写高质量的代码，参与系统架构设计与优化，进行性能调优等。",
+        "recruitment_count": 5,
+        "work_location": "北京市海淀区",
+        "salary_range": "￥12,000 - ￥18,000/月",
+        "benefits": [
+          "五险一金",
+          "带薪年假",
+          "弹性工作制",
+          "年终奖"
+        ],
+        "education_requirements": "本科及以上",
+        "experience_requirements": "2年以上Java开发经验",
+        "skills_requirements": [
+          "精通Java编程语言，熟悉Spring框架",
+          "熟悉MySQL数据库"
+        ],
+        "language_requirements": "英语六级以上",
+        "other_requirements": "良好的沟通能力和团队协作精神",
+        "job_status": "开放中",
+        "post_date": "2025-02-01",
+        "close_date": "2025-03-01",
+        "job_tags": [
+          "技术岗位",
+          "后端开发"
+        ]
+      },
+      {
+        "job_title": "市场经理",
+        "job_type": "全职",
+        "job_description": "负责市场调研与推广，制定市场策略，开拓新客户，维护老客户，提升品牌影响力。",
+        "recruitment_count": 3,
+        "work_location": "上海市浦东新区",
+        "salary_range": "￥15,000 - ￥25,000/月",
+        "benefits": [
+          "五险一金",
+          "带薪年假",
+          "团队旅游",
+          "股票期权"
+        ],
+        "education_requirements": "本科及以上，市场营销专业优先",
+        "experience_requirements": "5年以上市场营销经验",
+        "skills_requirements": [
+          "良好的市场分析能力",
+          "优秀的沟通与谈判技巧",
+          "熟练使用办公软件"
+        ],
+        "language_requirements": "流利的英语口语和写作能力",
+        "other_requirements": "能够承受较大工作压力，具备较强的团队合作精神",
+        "job_status": "开放中",
+        "post_date": "2025-02-05",
+        "close_date": "2025-03-05",
+        "job_tags": [
+          "市场岗位",
+          "销售"
+        ]
+      }
+    ];
+    pagination.total = 2;
+  });
+};
 
 const handleDisable = () => {
   if (multipleSelection.value.length === 0) {
@@ -407,14 +446,15 @@ const handleDisable = () => {
       type: 'warning',
     }
   ).then(() => {
-    // 模拟停用操作
-    multipleSelection.value.forEach(item => {
-      const index = tableData.findIndex(data => data.job_title === item.job_title);
-      if (index !== -1) {
-        tableData[index].job_status = '已停用';
-      }
+    // 获取选中项的ID数组
+    const ids = multipleSelection.value.map(item => item.id);
+    // 调用API停用岗位
+    changePositionStatus(ids, '已停用').then(() => {
+      ElMessage.success('停用成功');
+      fetchPositionList(); // 刷新列表
+    }).catch(error => {
+      ElMessage.error(`停用失败: ${error.message}`);
     });
-    ElMessage.success('停用成功');
   }).catch(() => { })
 }
 
@@ -433,16 +473,18 @@ const handleDelete = () => {
       type: 'error',
     }
   ).then(() => {
-    // 模拟删除操作
-    multipleSelection.value.forEach(item => {
-      const index = tableData.findIndex(data => data.job_title === item.job_title);
-      if (index !== -1) {
-        tableData.splice(index, 1);
-      }
+    // 获取选中项的ID数组
+    const ids = multipleSelection.value.map(item => item.id);
+    // 调用API删除岗位
+    deletePosition(ids).then(() => {
+      ElMessage.success('删除成功');
+      fetchPositionList(); // 刷新列表
+    }).catch(error => {
+      ElMessage.error(`删除失败: ${error.message}`);
     });
-    ElMessage.success('删除成功');
   }).catch(() => { })
 }
+
 const searchForm = ref({
   jobTitle: '',
   workLocation: '',
@@ -452,7 +494,8 @@ const searchForm = ref({
 });
 
 const handleSearch = () => {
-  alert(`搜索条件：\n职位名称：${searchForm.value.jobTitle}\n工作地点：${searchForm.value.workLocation}\n薪资范围：${searchForm.value.minSalary || 0}k - ${searchForm.value.maxSalary || 0}k\n岗位类型：${searchForm.value.jobType || '未选择'}`)
+  pagination.page = 1; // 重置到第一页
+  fetchPositionList();
 }
 
 const handleReset = () => {
@@ -461,5 +504,12 @@ const handleReset = () => {
   searchForm.value.minSalary = null;
   searchForm.value.maxSalary = null;
   searchForm.value.jobType = null;
+  pagination.page = 1; // 重置到第一页
+  fetchPositionList();
 }
+
+// 页面加载时获取数据
+onMounted(() => {
+  fetchPositionList();
+});
 </script>
