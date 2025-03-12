@@ -6,21 +6,24 @@
       <div class="search-inputs">
         <n-input v-model:value="searchForm.jobTitle" round placeholder="请输入职位名称" class="search-item">
           <template #suffix>
-            <n-icon :component="FlashOutline" />
+            <n-icon :component="FlashOutline"/>
           </template>
         </n-input>
         <n-input v-model:value="searchForm.workLocation" round placeholder="请输入工作地点" class="search-item">
           <template #suffix>
-            <n-icon :component="FlashOutline" />
+            <n-icon :component="FlashOutline"/>
           </template>
         </n-input>
         <n-space class="search-item" style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-          <n-input-number v-model:value="searchForm.minSalary" round placeholder="最低薪资" size="small" :min="0" style="width: 120px" />
+          <n-input-number v-model:value="searchForm.minSalary" round placeholder="最低薪资" size="small" :min="0"
+                          style="width: 120px"/>
           <span>-</span>
-          <n-input-number v-model:value="searchForm.maxSalary" round placeholder="最高薪资" size="small" :min="0" style="width: 120px" />
+          <n-input-number v-model:value="searchForm.maxSalary" round placeholder="最高薪资" size="small" :min="0"
+                          style="width: 120px"/>
           <span>k/月</span>
         </n-space>
-        <n-select v-model:value="searchForm.jobType" round placeholder="请选择岗位类型" class="search-item" :options="generalOptions" />
+        <n-select v-model:value="searchForm.jobType" round placeholder="请选择岗位类型" class="search-item"
+                  :options="generalOptions"/>
       </div>
       <div class="search-oper">
         <n-button type="primary" class="search-button" ghost @click="handleSearch">
@@ -31,7 +34,6 @@
         </n-button>
       </div>
     </div>
-
 
 
     <n-gradient-text class="title">岗位列表</n-gradient-text>
@@ -53,47 +55,48 @@
 
     <n-divider></n-divider>
 
-    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange" v-loading="loading">
-      <el-table-column type="selection" width="55" :selectable="selectable" />
-      <el-table-column fixed prop="job_title" label="职位名称" show-overflow-tooltip />
+    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
+              v-loading="loading">
+      <el-table-column type="selection" width="55" :selectable="selectable"/>
+      <el-table-column fixed prop="job_title" label="职位名称" show-overflow-tooltip/>
       <el-table-column prop="job_type" label="职位类别">
         <template #default="scope">
           <n-tag type="success" size="small" round>
-            {{ tableData[scope.$index].job_type }}
+            {{ scope.row.job_type }}
           </n-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="job_description" label="职位描述" show-overflow-tooltip />
-      <el-table-column prop="recruitment_count" label="招聘人数" />
-      <el-table-column prop="work_location" label="工作地点" show-overflow-tooltip />
-      <el-table-column prop="salary_range" label="薪资范围" show-overflow-tooltip />
-      <el-table-column prop="benefits" label="福利待遇" show-overflow-tooltip />
-      <el-table-column prop="education_requirements" label="学历要求" show-overflow-tooltip />
-      <el-table-column prop="experience_requirements" label="工作经验要求" show-overflow-tooltip />
-      <el-table-column prop="skills_requirements" label="技能要求" show-overflow-tooltip />
-      <el-table-column prop="language_requirements" label="语言要求" show-overflow-tooltip />
-      <el-table-column prop="other_requirements" label="其他能力要求" show-overflow-tooltip />
+      <el-table-column prop="job_description" label="职位描述" show-overflow-tooltip/>
+      <el-table-column prop="recruitment_count" label="招聘人数"/>
+      <el-table-column prop="work_location" label="工作地点" show-overflow-tooltip/>
+      <el-table-column prop="salary_range" label="薪资范围" show-overflow-tooltip/>
+      <el-table-column prop="benefits" label="福利待遇" show-overflow-tooltip/>
+      <el-table-column prop="education_requirements" label="学历要求" show-overflow-tooltip/>
+      <el-table-column prop="experience_requirements" label="工作经验要求" show-overflow-tooltip/>
+      <el-table-column prop="skills_requirements" label="技能要求" show-overflow-tooltip/>
+      <el-table-column prop="language_requirements" label="语言要求" show-overflow-tooltip/>
+      <el-table-column prop="other_requirements" label="其他能力要求" show-overflow-tooltip/>
       <el-table-column prop="job_status" label="职位状态" show-overflow-tooltip>
         <template #default="scope">
           <n-tag type="success" size="small" round>
-            {{ tableData[scope.$index].job_status }}
+            {{ scope.row.job_status }}
           </n-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="post_date" label="发布日期" show-overflow-tooltip />
-      <el-table-column prop="close_date" label="截止日期" show-overflow-tooltip />
-      <el-table-column prop="job_tags" label="备注" show-overflow-tooltip />
+      <el-table-column prop="post_date" label="发布日期" show-overflow-tooltip/>
+      <el-table-column prop="close_date" label="截止日期" show-overflow-tooltip/>
+      <el-table-column prop="job_tags" label="备注" show-overflow-tooltip/>
     </el-table>
 
     <div class="pagination">
-      <n-pagination 
-        v-model:page="pagination.page" 
-        v-model:page-size="pagination.pageSize" 
-        :item-count="pagination.total" 
-        :page-sizes="[10, 20, 30, 40]" 
-        show-size-picker 
-        @update:page="handlePageChange" 
-        @update:page-size="handlePageSizeChange"
+      <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.total"
+          :page-sizes="[10, 20, 30, 40]"
+          show-size-picker
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
       />
     </div>
   </div>
@@ -104,34 +107,34 @@
       <n-form ref="formRef" :model="formData" :rules="rules" :size="size" label-placement="top">
         <n-grid :cols="24" :x-gap="24">
           <n-form-item-gi :span="12" label="岗位名称" path="job_title">
-            <n-input v-model:value="formData.job_title" placeholder="输入岗位名称" />
+            <n-input v-model:value="formData.job_title" placeholder="输入岗位名称"/>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="岗位类别" path="job_type">
             <el-select v-model="formData.job_type" :options="generalOptions" placeholder="请选择岗位类别">
-              <el-option v-for="item in generalOptions" :key="item.value" :label="item.label" :value="item.value" />
+              <el-option v-for="item in generalOptions" :key="item.value" :label="item.label" :value="item.value"/>
             </el-select>
           </n-form-item-gi>
           <n-form-item-gi :span="24" label="岗位描述" path="job_description">
             <n-input v-model:value="formData.job_description" placeholder="输入岗位描述" type="textarea" :autosize="{
               minRows: 3,
               maxRows: 5
-            }" />
+            }"/>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="工作地点" path="work_location">
-            <n-input v-model:value="formData.work_location" placeholder="输入工作地点" />
+            <n-input v-model:value="formData.work_location" placeholder="输入工作地点"/>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="招聘人数" path="recruitment_count">
-            <n-input-number v-model:value="formData.recruitment_count" placeholder="输入招聘人数" :min="1" />
+            <n-input-number v-model:value="formData.recruitment_count" placeholder="输入招聘人数" :min="1"/>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="薪资范围(月薪/k)" path="salary_range">
             <n-space style="display: flex; align-items: center; white-space: nowrap;">
               <n-slider
-                v-model:value="value"
-                range
-                :min="0"
-                :max="100"
-                :step="1"
-                :marks="{
+                  v-model:value="value"
+                  range
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :marks="{
                   0: '0k',
                   20: '20k',
                   40: '40k',
@@ -139,14 +142,15 @@
                   80: '80k',
                   100: '100k'
                 }"
-                style="width: 300px"
+                  style="width: 300px"
               />
               <span>{{ value[0] }}k - {{ value[1] }}k/月</span>
             </n-space>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="发布日期" path="post_date">
-            <el-date-picker v-model="formData.post_date" type="date" :disabled-date="disabledDate" placeholder="选择发布日期"
-              value-format="YYYY-MM-DD" />
+            <el-date-picker v-model="formData.post_date" type="date" :disabled-date="disabledDate"
+                            placeholder="选择发布日期"
+                            value-format="YYYY-MM-DD"/>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="学历要求" path="education_requirements">
             <el-select v-model="formData.education_requirements" placeholder="选择学历要求">
@@ -156,7 +160,7 @@
               { label: '本科', value: '本科' },
               { label: '硕士', value: '硕士' },
               { label: '博士', value: '博士' }
-            ]" :key="item.value" :label="item.label" :value="item.value" />
+            ]" :key="item.value" :label="item.label" :value="item.value"/>
             </el-select>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="工作经验" path="experience_requirements">
@@ -167,7 +171,7 @@
               { label: '1-3年', value: '1-3年' },
               { label: '3-5年', value: '3-5年' },
               { label: '5年以上', value: '5年以上' }
-            ]" :key="item.value" :label="item.label" :value="item.value" />
+            ]" :key="item.value" :label="item.label" :value="item.value"/>
             </el-select>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="福利待遇" path="benefits">
@@ -181,11 +185,11 @@
               { label: '交通补助', value: '交通补助' },
               { label: '通讯补贴', value: '通讯补贴' },
               { label: '节日福利', value: '节日福利' }
-            ]" :key="item.value" :label="item.label" :value="item.value" />
+            ]" :key="item.value" :label="item.label" :value="item.value"/>
             </el-select>
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="是否急聘" path="switchValue">
-            <n-switch v-model:value="formData.switchValue" />
+            <n-switch v-model:value="formData.switchValue"/>
           </n-form-item-gi>
           <n-gi :span="24">
             <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px">
@@ -202,12 +206,18 @@
 
 <script setup lang="ts">
 
-import { FlashOutline } from '@vicons/ionicons5';
+import {FlashOutline} from '@vicons/ionicons5';
 import './index.scss';
-import type { TableInstance } from 'element-plus';
-import { ref, reactive, onMounted } from 'vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { getPositionList, addPosition, updatePosition, deletePosition, changePositionStatus } from '@/api/position/index.js';
+import type {TableInstance} from 'element-plus';
+import {ref, reactive, onMounted} from 'vue';
+import {ElMessage, ElMessageBox} from 'element-plus';
+import {
+  getPositionList,
+  addPosition,
+  updatePosition,
+  deletePosition,
+  changePositionStatus
+} from '@/api/position/index.js';
 
 const formRef = ref();
 
@@ -226,9 +236,9 @@ const formData = ref({
 });
 
 const generalOptions = [
-  { label: '全职', value: '全职' },
-  { label: '兼职', value: '兼职' },
-  { label: '实习', value: '实习' }
+  {label: '全职', value: '全职'},
+  {label: '兼职', value: '兼职'},
+  {label: '实习', value: '实习'}
 ];
 
 const value = ref([0, 0]);
@@ -275,54 +285,6 @@ const printInfo = () => {
   dialogShow.value = true;
   console.log(multipleSelection.value);
 }
-((errors) => {
-    if (!errors) {
-      const formValues = {
-        ...formData.value,
-        salary_range: `￥${value.value[0]}k - ￥${value.value[1]}k/月`,
-        post_date: formData.value.post_date ? new Date(formData.value.post_date).toISOString().split('T')[0] : null
-      };
-
-      if (isEdit.value) {
-        // 调用更新API
-        updatePosition(formValues).then(() => {
-          ElMessage.success('更新成功');
-          fetchPositionList(); // 刷新列表
-          dialogShow.value = false;
-        }).catch(error => {
-          ElMessage.error(`更新失败: ${error.message}`);
-        });
-      } else {
-        // 调用添加API
-        addPosition(formValues).then(() => {
-          ElMessage.success('添加成功');
-          fetchPositionList(); // 刷新列表
-          dialogShow.value = false;
-        }).catch(error => {
-          ElMessage.error(`添加失败: ${error.message}`);
-        });
-      }
-
-      // 重置表单
-      formRef.value?.restoreValidation();
-      Object.keys(formData.value).forEach(key => {
-        if (Array.isArray(formData.value[key])) {
-          formData.value[key] = [];
-        } else if (typeof formData.value[key] === 'boolean') {
-          formData.value[key] = false;
-        } else if (typeof formData.value[key] === 'number') {
-          formData.value[key] = 0;
-        } else {
-          formData.value[key] = '';
-        }
-      });
-      value.value = [0, 0];
-      isEdit.value = false;
-    } else {
-      console.log(errors);
-    }
-  });
-}
 
 // 表格数据
 const tableData = ref([]);
@@ -357,7 +319,7 @@ const fetchPositionList = () => {
     pageSize: pagination.pageSize,
     ...searchForm.value
   };
-  
+
   getPositionList(params).then(res => {
     tableData.value = res.data.list;
     pagination.total = res.data.total;
@@ -438,13 +400,13 @@ const handleDisable = () => {
   }
 
   ElMessageBox.confirm(
-    `确定要停用选中的${multipleSelection.value.length}个岗位吗？`,
-    '警告',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
+      `确定要停用选中的${multipleSelection.value.length}个岗位吗？`,
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
   ).then(() => {
     // 获取选中项的ID数组
     const ids = multipleSelection.value.map(item => item.id);
@@ -455,7 +417,8 @@ const handleDisable = () => {
     }).catch(error => {
       ElMessage.error(`停用失败: ${error.message}`);
     });
-  }).catch(() => { })
+  }).catch(() => {
+  })
 }
 
 const handleDelete = () => {
@@ -465,13 +428,13 @@ const handleDelete = () => {
   }
 
   ElMessageBox.confirm(
-    `确定要删除选中的${multipleSelection.value.length}个岗位吗？此操作不可恢复！`,
-    '警告',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'error',
-    }
+      `确定要删除选中的${multipleSelection.value.length}个岗位吗？此操作不可恢复！`,
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error',
+      }
   ).then(() => {
     // 获取选中项的ID数组
     const ids = multipleSelection.value.map(item => item.id);
@@ -482,7 +445,8 @@ const handleDelete = () => {
     }).catch(error => {
       ElMessage.error(`删除失败: ${error.message}`);
     });
-  }).catch(() => { })
+  }).catch(() => {
+  })
 }
 
 const searchForm = ref({
